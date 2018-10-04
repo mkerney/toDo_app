@@ -1,5 +1,5 @@
 // Modules to control application life and create native browser window
-const {app, BrowserWindow, ipcMain, electron, Menu, Notification} = require('electron')
+const {app, BrowserWindow, ipcMain, electron} = require('electron')
 const fs = require('fs');
 const {sequelize, TodoItem} = require('./src/model');
 
@@ -59,90 +59,10 @@ app.on('activate', function () {
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
 
-// Menu Options
-const template = [
-  {
-    label: 'Edit',
-    submenu: [
-      {role: 'undo'},
-      {role: 'redo'},
-      {type: 'separator'},
-      {role: 'cut'},
-      {role: 'copy'},
-      {role: 'paste'},
-      {role: 'pasteandmatchstyle'},
-      {role: 'delete'},
-      {role: 'selectall'}
-    ]
-  },
-  {
-    label: 'View',
-    submenu: [
-      {role: 'reload'},
-      {role: 'forcereload'},
-      {role: 'toggledevtools'},
-      {type: 'separator'},
-      {role: 'resetzoom'},
-      {role: 'zoomin'},
-      {role: 'zoomout'},
-      {type: 'separator'},
-      {role: 'togglefullscreen'}
-    ]
-  },
-  {
-    role: 'window',
-    submenu: [
-      {role: 'minimize'},
-      {role: 'close'}
-    ]
-  },
-  {
-    role: 'help',
-    submenu: [
-      {
-        label: 'Learn More',
-        click () { require('electron').shell.openExternal('https://electronjs.org') }
-      }
-    ]
-  }
-]
-
-if (process.platform === 'darwin') {
-  template.unshift({
-    label: app.getName(),
-    submenu: [
-      {role: 'about'},
-      {type: 'separator'},
-      {role: 'services', submenu: []},
-      {type: 'separator'},
-      {role: 'hide'},
-      {role: 'hideothers'},
-      {role: 'unhide'},
-      {type: 'separator'},
-      {role: 'quit'}
-    ]
+ipcMain.on('click',(event, data) => {
+  TodoItem.create({
+    description: data
+  }).then((item)=>{
+    mainWindow.webContents.send('task', JSON.stringify(item.toJSON()));
   })
-}
-
-const menu = Menu.buildFromTemplate(template)
-
-
-
-let childWindow;
-ipcMain.on('clickone',() => {
-  childWindow = new BrowserWindow({parent: mainWindow, modal: true, show: false, center: true, width: 400, height: 300})
-  childWindow.loadFile('my.html');
-  // childWindow.once('ready-to-show', () => {
-    childWindow.show()
-  // })
-  // childWindow.webContents.openDevTools() 
-  // childWindow.show();
-})
-ipcMain.on('closeIt', ()=>{
-  childWindow.hide();
-})
-
-ipcMain.on('formsubmit',(event, data) => {
-  //ipcMain.send('notification',data)
-  mainWindow.webContents.send('notification',data);
 });

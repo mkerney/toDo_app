@@ -2,27 +2,36 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Hello World!</title>
-    <style>
-      h1{
-        text-align: center;
-        font-size: 52px;
-      }
-    </style>
+    <title>Todo List</title>
+    <link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"/>
   </head>
   <body>
-    <h1>Hello World!</h1>
-    <!-- All of the Node.js APIs are available in this renderer process. -->
-    We are using Node.js <script>document.write(process.versions.node)</script>,
-    Chromium <script>document.write(process.versions.chrome)</script>,
-    and Electron <script>document.write(process.versions.electron)</script>.
-    <div class="">
-        <input type="button" value="click me" id="formSubmit" />
+    <div class="todo-list-wrapper text-center">
+        <h1 class="todo-list-heading">Todo List</h1>
+        <div class="">
+            <input type="text" id="todoInput" /> 
+        </div>
+        <div class="todo-add-remove">
+            <button type="button" id="addRecord">Add Record</button>
+        </div>
+        </br>
+        <div class="">
+            <ul class="d-flex flex-column list-unstyled" id="listHolder">
+                <li>
+                    <label>
+                        <input type="checkbox" class="todoCheck" /> 
+                        First
+                    </label>
+                </li>
+            </ul>
+        </div>
+        <div class="todo-add-remove">
+            <button type="button" id="removeTodo">Remove Todo</button>
+        </div>
     </div>
-
     <script>
       // You can also require other files to run in this process
-    //   require('./renderer.js')
+      require('./renderer.js')
     </script>
   </body>
 </html>

@@ -22,7 +22,9 @@ sequelize.sync().then(() => TodoItem.create({
         description: "First task",
     })).then(item => {
         console.log(item);
-
+    // sequelize.findAll().then(item => {
+    //     console.log(item);
+    // })
 });
 
 module.exports={
