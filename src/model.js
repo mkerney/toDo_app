@@ -10,7 +10,7 @@ const sequelize = new Sequelize('config.database', 'config.username', 'config.pa
     operatorsAliases: false
 });
 
-const Todoitem = sequelize.define('todo_item', {
+const TodoItem = sequelize.define('todo_item', {
     description: Sequelize.TEXT,
     status: {
         type: Sequelize.BOOLEAN,
@@ -18,10 +18,14 @@ const Todoitem = sequelize.define('todo_item', {
     }
 });
 
-sequelize.sync()
-    .then(() => Todoitem.create({
+sequelize.sync().then(() => TodoItem.create({
         description: "First task",
-    }))
-    .then(item => {
+    })).then(item => {
         console.log(item);
+
 });
+
+module.exports={
+    sequelize:sequelize,
+    TodoItem: TodoItem
+}
